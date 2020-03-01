@@ -1,4 +1,4 @@
-package graficos;
+package br.com.svbgabriel.jelda.main;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
