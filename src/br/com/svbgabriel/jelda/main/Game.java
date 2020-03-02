@@ -6,8 +6,14 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
+
+import br.com.svbgabriel.jelda.entities.Entity;
+import br.com.svbgabriel.jelda.entities.Player;
+import br.com.svbgabriel.jelda.graphics.Spritesheet;
 
 public class Game extends Canvas implements Runnable {
 
@@ -21,10 +27,19 @@ public class Game extends Canvas implements Runnable {
 
 	private BufferedImage image;
 
+	public List<Entity> entities;
+	public Spritesheet spritesheet;
+
 	public Game() {
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		initFrame();
+		// Inicializando objetos
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		entities = new ArrayList<>();
+		spritesheet = new Spritesheet("/spritesheet.png");
+
+		Player player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
+		entities.add(player);
 	}
 
 	public void initFrame() {
@@ -58,7 +73,9 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void tick() {
-
+		for (Entity e : entities) {
+			e.tick();
+		}
 	}
 
 	public void render() {
@@ -71,7 +88,10 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		// Renderização do jogo
-		//Graphics2D g2 = (Graphics2D) g;
+		// Graphics2D g2 = (Graphics2D) g;
+		for (Entity e : entities) {
+			e.render(g);
+		}
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
