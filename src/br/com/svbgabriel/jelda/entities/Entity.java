@@ -49,7 +49,7 @@ public class Entity {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(sprite, (int) x, (int) y, null);
+		g.drawImage(sprite, getX(), getY(), null);
 	}
 
 }
