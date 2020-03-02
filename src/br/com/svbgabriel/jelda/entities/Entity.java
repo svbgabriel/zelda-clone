@@ -5,10 +5,10 @@ import java.awt.image.BufferedImage;
 
 public class Entity {
 
-	private int x;
-	private int y;
-	private int width;
-	private int height;
+	protected double x;
+	protected double y;
+	protected int width;
+	protected int height;
 
 	private BufferedImage sprite;
 
@@ -20,12 +20,20 @@ public class Entity {
 		this.sprite = sprite;
 	}
 
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
 	public int getX() {
-		return x;
+		return (int) x;
 	}
 
 	public int getY() {
-		return y;
+		return (int) y;
 	}
 
 	public int getWidth() {
@@ -41,6 +49,7 @@ public class Entity {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(sprite, x, y, null);
+		g.drawImage(sprite, (int) x, (int) y, null);
 	}
+
 }

@@ -4,6 +4,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import br.com.svbgabriel.jelda.entities.Entity;
 import br.com.svbgabriel.jelda.entities.Player;
 import br.com.svbgabriel.jelda.graphics.Spritesheet;
 
-public class Game extends Canvas implements Runnable {
+public class Game extends Canvas implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = -6698469945672704134L;
 	public static JFrame frame;
@@ -30,7 +32,10 @@ public class Game extends Canvas implements Runnable {
 	public List<Entity> entities;
 	public Spritesheet spritesheet;
 
+	Player player;
+
 	public Game() {
+		addKeyListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		initFrame();
 		// Inicializando objetos
@@ -38,7 +43,7 @@ public class Game extends Canvas implements Runnable {
 		entities = new ArrayList<>();
 		spritesheet = new Spritesheet("/spritesheet.png");
 
-		Player player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
+		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 	}
 
@@ -85,7 +90,7 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 		Graphics g = image.getGraphics();
-		g.setColor(Color.BLACK);
+		g.setColor(new Color(0, 255, 0));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		// Renderização do jogo
 		// Graphics2D g2 = (Graphics2D) g;
@@ -126,6 +131,41 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		stop();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			player.right = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			player.left = true;
+		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			player.up = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			player.down = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			player.right = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			player.left = false;
+		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			player.up = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			player.down = false;
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
 	}
 
 }
