@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import br.com.svbgabriel.jelda.entities.Entity;
 import br.com.svbgabriel.jelda.entities.Player;
 import br.com.svbgabriel.jelda.graphics.Spritesheet;
+import br.com.svbgabriel.jelda.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 
@@ -32,13 +33,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public List<Entity> entities;
 	public static Spritesheet spritesheet;
 
-	Player player;
+	public static World world;
+
+	private Player player;
 
 	public Game() {
 		addKeyListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		initFrame();
 		// Inicializando objetos
+		world = new World("/map.png");
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<>();
 		spritesheet = new Spritesheet("/spritesheet.png");
