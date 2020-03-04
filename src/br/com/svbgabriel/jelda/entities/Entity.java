@@ -3,7 +3,14 @@ package br.com.svbgabriel.jelda.entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import br.com.svbgabriel.jelda.main.Game;
+
 public class Entity {
+
+	public static BufferedImage LIFEPACK_EN = Game.spritesheet.getSprite(96, 0, 16, 16);
+	public static BufferedImage WEAPON_EN = Game.spritesheet.getSprite(112, 0, 16, 16);
+	public static BufferedImage BULLET_EN = Game.spritesheet.getSprite(96, 16, 16, 16);
+	public static BufferedImage ENEMY_EN = Game.spritesheet.getSprite(112, 16, 16, 16);
 
 	protected double x;
 	protected double y;

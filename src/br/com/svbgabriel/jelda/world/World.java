@@ -6,6 +6,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import br.com.svbgabriel.jelda.entities.Bullet;
+import br.com.svbgabriel.jelda.entities.Enemy;
+import br.com.svbgabriel.jelda.entities.Entity;
+import br.com.svbgabriel.jelda.entities.LifePack;
+import br.com.svbgabriel.jelda.entities.Weapon;
+import br.com.svbgabriel.jelda.main.Game;
+
 public class World {
 
 	private Tile[] tiles;
@@ -23,6 +30,7 @@ public class World {
 			for (int xx = 0; xx < map.getWidth(); xx++) {
 				for (int yy = 0; yy < map.getHeight(); yy++) {
 					int currentPixel = pixels[xx + (yy * map.getWidth())];
+					tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
 					if (currentPixel == 0xFF000000) {
 						// Floor/Chão
 						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
@@ -31,10 +39,20 @@ public class World {
 						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_WALL);
 					} else if (currentPixel == 0xFF1F16EC) {
 						// Player
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
-					} else {
-						// Floor/Chão
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
+						Game.player.setX(xx * 16);
+						Game.player.setY(yy * 16);
+					} else if (currentPixel == 0xFFFF0000) {
+						// Enemy
+						Game.entities.add(new Enemy(xx * 16, yy * 16, 16, 16, Entity.ENEMY_EN));
+					} else if (currentPixel == 0xFFDC7F2C) {
+						// Weapon
+						Game.entities.add(new Weapon(xx * 16, yy * 16, 16, 16, Entity.WEAPON_EN));
+					} else if (currentPixel == 0xFFD36E6E) {
+						// Life Pack
+						Game.entities.add(new LifePack(xx * 16, yy * 16, 16, 16, Entity.LIFEPACK_EN));
+					} else if (currentPixel == 0xFFECE416) {
+						// Bullet
+						Game.entities.add(new Bullet(xx * 16, yy * 16, 16, 16, Entity.BULLET_EN));
 					}
 				}
 			}

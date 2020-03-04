@@ -30,12 +30,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	private BufferedImage image;
 
-	public List<Entity> entities;
+	public static List<Entity> entities;
 	public static Spritesheet spritesheet;
 
 	public static World world;
 
-	private Player player;
+	public static Player player;
 
 	public Game() {
 		addKeyListener(this);
@@ -45,9 +45,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<>();
 		spritesheet = new Spritesheet("/spritesheet.png");
-		world = new World("/map.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
+		world = new World("/map.png");
 	}
 
 	public void initFrame() {
