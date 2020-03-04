@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import br.com.svbgabriel.jelda.main.Game;
+import br.com.svbgabriel.jelda.world.Camera;
 
 public class Entity {
 
@@ -56,7 +57,7 @@ public class Entity {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(sprite, getX(), getY(), null);
+		g.drawImage(sprite, getX() - Camera.x, getY() - Camera.y, null);
 	}
 
 }

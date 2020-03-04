@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import br.com.svbgabriel.jelda.main.Game;
+import br.com.svbgabriel.jelda.world.Camera;
 
 public class Player extends Entity {
 
@@ -67,13 +68,16 @@ public class Player extends Entity {
 				}
 			}
 		}
+		
+		Camera.x = getX() - (Game.WIDTH/2);
+		Camera.y = getY() - (Game.HEIGHT/2);
 	}
 
 	public void render(Graphics g) {
 		if (dir == right_dir) {
-			g.drawImage(rightPlayer[index], getX(), getY(), null);
+			g.drawImage(rightPlayer[index], getX() - Camera.x, getY() - Camera.y, null);
 		} else if (dir == left_dir) {
-			g.drawImage(leftPlayer[index], getX(), getY(), null);
+			g.drawImage(leftPlayer[index], getX() - Camera.x, getY() - Camera.y, null);
 		}
 	}
 
