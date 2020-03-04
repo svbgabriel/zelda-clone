@@ -41,12 +41,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		addKeyListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		initFrame();
-		// Inicializando objetos
-		world = new World("/map.png");
+		// Inicializando objetos		
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<>();
 		spritesheet = new Spritesheet("/spritesheet.png");
-
+		world = new World("/map.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 	}
@@ -94,10 +93,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			return;
 		}
 		Graphics g = image.getGraphics();
-		g.setColor(new Color(0, 255, 0));
+		g.setColor(new Color(0, 0, 0));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		// Renderização do jogo
 		// Graphics2D g2 = (Graphics2D) g;
+		world.render(g);
 		for (Entity e : entities) {
 			e.render(g);
 		}
