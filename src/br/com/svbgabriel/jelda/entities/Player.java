@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import br.com.svbgabriel.jelda.main.Game;
 import br.com.svbgabriel.jelda.world.Camera;
+import br.com.svbgabriel.jelda.world.World;
 
 public class Player extends Entity {
 
@@ -68,9 +69,10 @@ public class Player extends Entity {
 				}
 			}
 		}
-		
-		Camera.x = getX() - (Game.WIDTH/2);
-		Camera.y = getY() - (Game.HEIGHT/2);
+
+		// Calcula a movimentação para a Câmera
+		Camera.x = Camera.clamp(getX() - (Game.WIDTH/2), 0, World.WIDTH * 16 - Game.WIDTH); 				
+		Camera.y = Camera.clamp(getY() - (Game.HEIGHT/2), 0, World.HEIGHT * 16 - Game.HEIGHT);
 	}
 
 	public void render(Graphics g) {
