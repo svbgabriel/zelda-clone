@@ -18,6 +18,7 @@ import br.com.svbgabriel.jelda.entities.Enemy;
 import br.com.svbgabriel.jelda.entities.Entity;
 import br.com.svbgabriel.jelda.entities.Player;
 import br.com.svbgabriel.jelda.graphics.Spritesheet;
+import br.com.svbgabriel.jelda.graphics.UI;
 import br.com.svbgabriel.jelda.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener {
@@ -39,15 +40,18 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static World world;
 
 	public static Player player;
-	
+
 	public static Random rand;
 
+	public UI ui;
+
 	public Game() {
+		ui = new UI();
 		rand = new Random();
 		addKeyListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		initFrame();
-		// Inicializando objetos		
+		// Inicializando objetos
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<>();
 		enemies = new ArrayList<>();
@@ -108,6 +112,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		for (Entity e : entities) {
 			e.render(g);
 		}
+		ui.render(g);
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
@@ -152,7 +157,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			player.left = true;
 		}
-		
+
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			player.up = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
@@ -167,7 +172,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			player.left = false;
 		}
-		
+
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			player.up = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
