@@ -16,6 +16,12 @@ public class Enemy extends Entity {
 	private int maxIndex = 1;
 	private double speed = 0.4;
 
+	// Máscara de colisão
+	private int maskX = 8;
+	private int maskY = 8;
+	private int maskWidth = 10;
+	private int maskHeight = 10;
+
 	private BufferedImage[] sprites;
 
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
@@ -65,19 +71,19 @@ public class Enemy extends Entity {
 	}
 
 	public boolean isCollidingWithPlayer() {
-		Rectangle enemy = new Rectangle(getX(), getY(), World.TILE_SIZE, World.TILE_SIZE);
+		Rectangle enemy = new Rectangle(getX() + maskX, getY() + maskY, maskWidth, maskHeight);
 		Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), 16, 16);
 
 		return enemy.intersects(player);
 	}
 
 	public boolean isColliding(int xNext, int yNext) {
-		Rectangle enemyCurrent = new Rectangle(xNext, yNext, World.TILE_SIZE, World.TILE_SIZE);
+		Rectangle enemyCurrent = new Rectangle(xNext + maskX, yNext + maskY, maskWidth, maskHeight);
 		for (Enemy e : Game.enemies) {
 			if (e == this) {
 				continue;
 			}
-			Rectangle targetEnemy = new Rectangle(e.getX(), e.getY(), World.TILE_SIZE, World.TILE_SIZE);
+			Rectangle targetEnemy = new Rectangle(e.getX() + maskX, e.getY() + maskY, maskWidth, maskHeight);
 			if (enemyCurrent.intersects(targetEnemy)) {
 				return true;
 			}
