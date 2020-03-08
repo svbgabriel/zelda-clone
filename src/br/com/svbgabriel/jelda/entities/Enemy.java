@@ -79,7 +79,8 @@ public class Enemy extends Entity {
 
 	public boolean isColliding(int xNext, int yNext) {
 		Rectangle enemyCurrent = new Rectangle(xNext + maskX, yNext + maskY, maskWidth, maskHeight);
-		for (Enemy e : Game.enemies) {
+		for (int i = 0; i < Game.enemies.size(); i++) {
+			Enemy e = Game.enemies.get(i);
 			if (e == this) {
 				continue;
 			}

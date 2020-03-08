@@ -92,7 +92,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	}
 
 	public void tick() {
-		for (Entity e : entities) {
+		for (int i = 0; i < entities.size(); i ++) {
+			Entity e = entities.get(i);
 			e.tick();
 		}
 	}
@@ -109,7 +110,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		// Renderização do jogo
 		// Graphics2D g2 = (Graphics2D) g;
 		world.render(g);
-		for (Entity e : entities) {
+		for (int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
 			e.render(g);
 		}
 		ui.render(g);
