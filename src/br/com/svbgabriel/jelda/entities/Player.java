@@ -3,6 +3,7 @@ package br.com.svbgabriel.jelda.entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import br.com.svbgabriel.jelda.graphics.Spritesheet;
 import br.com.svbgabriel.jelda.main.Game;
 import br.com.svbgabriel.jelda.world.Camera;
 import br.com.svbgabriel.jelda.world.World;
@@ -29,8 +30,8 @@ public class Player extends Entity {
 
 	private BufferedImage playerDamage;
 
-	public static double life = 100;
-	public static double maxLife = 100;
+	public double life = 100;
+	public double maxLife = 100;
 
 	public int bullet = 0;
 
@@ -90,6 +91,17 @@ public class Player extends Entity {
 				damageFrames = 0;
 				isDamaged = false;
 			}
+		}
+
+		// Game over
+		if (life <= 0) {
+			Game.entities.clear();
+			Game.enemies.clear();
+			Game.spritesheet = new Spritesheet("/spritesheet.png");
+			Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
+			Game.entities.add(Game.player);
+			Game.world = new World("/map.png");
+			return;
 		}
 
 		// Calcula a movimentação para a Câmera
