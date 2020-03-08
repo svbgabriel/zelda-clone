@@ -38,6 +38,8 @@ public class Player extends Entity {
 	public boolean isDamaged = false;
 	private int damageFrames = 0;
 
+	public boolean hasWeapon = false;
+
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
 
@@ -84,6 +86,7 @@ public class Player extends Entity {
 
 		checkCollisionWithLifePack();
 		checkCollisionWithBullet();
+		checkCollisionWithWeapon();
 
 		if (isDamaged) {
 			damageFrames++;
@@ -136,12 +139,30 @@ public class Player extends Entity {
 		}
 	}
 
+	public void checkCollisionWithWeapon() {
+		for (int i = 0; i < Game.entities.size(); i++) {
+			Entity e = Game.entities.get(i);
+			if (e instanceof Weapon) {
+				if (Entity.isColliding(this, e)) {
+					hasWeapon = true;
+					Game.entities.remove(e);
+				}
+			}
+		}
+	}
+
 	public void render(Graphics g) {
 		if (!isDamaged) {
 			if (dir == right_dir) {
 				g.drawImage(rightPlayer[index], getX() - Camera.x, getY() - Camera.y, null);
+				if (hasWeapon) {
+					g.drawImage(WEAPON_RIGHT, getX() - Camera.x + 8, getY() - Camera.y, null);
+				}
 			} else if (dir == left_dir) {
 				g.drawImage(leftPlayer[index], getX() - Camera.x, getY() - Camera.y, null);
+				if (hasWeapon) {
+					g.drawImage(WEAPON_LEFT, getX() - Camera.x - 8, getY() - Camera.y, null);
+				}
 			}
 		} else {
 			g.drawImage(playerDamage, getX() - Camera.x, getY() - Camera.y, null);
