@@ -51,8 +51,8 @@ public class Enemy extends Entity {
 		} else {
 			// Inimigo está colidindo com o Player
 			if (Game.rand.nextInt(100) < 10) {
-				Game.player.life--;
-				System.out.println("Vida: " + Game.player.life);
+				Player.life--;
+				System.out.println("Vida: " + Player.life);
 			}
 		}
 
