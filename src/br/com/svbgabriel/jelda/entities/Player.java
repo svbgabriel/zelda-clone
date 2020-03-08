@@ -33,7 +33,7 @@ public class Player extends Entity {
 	public double life = 100;
 	public double maxLife = 100;
 
-	public int bullet = 0;
+	public int ammo = 0;
 
 	public boolean isDamaged = false;
 	private int damageFrames = 0;
@@ -115,9 +115,9 @@ public class Player extends Entity {
 	public void checkCollisionWithBullet() {
 		for (int i = 0; i < Game.entities.size(); i++) {
 			Entity e = Game.entities.get(i);
-			if (e instanceof Bullet) {
+			if (e instanceof Ammo) {
 				if (Entity.isColliding(this, e)) {
-					bullet += 10;
+					ammo += 10;
 					Game.entities.remove(e);
 				}
 			}

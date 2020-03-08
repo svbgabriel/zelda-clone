@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import br.com.svbgabriel.jelda.entities.Bullet;
+import br.com.svbgabriel.jelda.entities.Ammo;
 import br.com.svbgabriel.jelda.entities.Enemy;
 import br.com.svbgabriel.jelda.entities.Entity;
 import br.com.svbgabriel.jelda.entities.LifePack;
@@ -55,8 +55,8 @@ public class World {
 						LifePack pack = new LifePack(xx * 16, yy * 16, 16, 16, Entity.LIFEPACK_EN);
 						Game.entities.add(pack);
 					} else if (currentPixel == 0xFFECE416) {
-						// Bullet
-						Game.entities.add(new Bullet(xx * 16, yy * 16, 16, 16, Entity.BULLET_EN));
+						// Ammo
+						Game.entities.add(new Ammo(xx * 16, yy * 16, 16, 16, Entity.AMMO_EN));
 					}
 				}
 			}
@@ -65,7 +65,7 @@ public class World {
 		}
 	}
 
-	// Verifica se o tile para onde está se movendo é livre
+	// Verifica se o tile para onde está se movendo esta livre
 	public static boolean isFree(int xNext, int yNext) {
 		int x1 = xNext / TILE_SIZE;
 		int y1 = yNext / TILE_SIZE;
