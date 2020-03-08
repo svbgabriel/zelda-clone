@@ -73,9 +73,26 @@ public class Player extends Entity {
 			}
 		}
 
+		checkCollisionWithLifePack();
+
 		// Calcula a movimentação para a Câmera
-		Camera.x = Camera.clamp(getX() - (Game.WIDTH/2), 0, World.WIDTH * 16 - Game.WIDTH); 				
-		Camera.y = Camera.clamp(getY() - (Game.HEIGHT/2), 0, World.HEIGHT * 16 - Game.HEIGHT);
+		Camera.x = Camera.clamp(getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
+		Camera.y = Camera.clamp(getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
+	}
+
+	public void checkCollisionWithLifePack() {
+		for (int i = 0; i < Game.entities.size(); i ++) {
+			Entity e = Game.entities.get(i);
+			if (e instanceof LifePack) {
+				if (Entity.isColliding(this, e)) {
+					life += 10;
+					if (life > 100) {
+						life = 100;
+					}
+					Game.entities.remove(e);
+				}
+			}
+		}
 	}
 
 	public void render(Graphics g) {

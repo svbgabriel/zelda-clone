@@ -1,6 +1,7 @@
 package br.com.svbgabriel.jelda.entities;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import br.com.svbgabriel.jelda.main.Game;
@@ -18,6 +19,12 @@ public class Entity {
 	protected int width;
 	protected int height;
 
+	// Máscara de colisão
+	private int maskX;
+	private int maskY;
+	private int maskWidth;
+	private int maskHeight;
+
 	private BufferedImage sprite;
 
 	public Entity(int x, int y, int width, int height, BufferedImage sprite) {
@@ -26,6 +33,18 @@ public class Entity {
 		this.width = width;
 		this.height = height;
 		this.sprite = sprite;
+
+		this.maskX = 0;
+		this.maskY = 0;
+		this.maskWidth = width;
+		this.maskHeight = height;
+	}
+
+	public void setMask(int maskX, int maskY, int maskWidth, int maskHeight) {
+		this.maskX = maskX;
+		this.maskY = maskY;
+		this.maskWidth = maskWidth;
+		this.maskHeight = maskHeight;
 	}
 
 	public void setX(int x) {
@@ -54,6 +73,12 @@ public class Entity {
 
 	public void tick() {
 
+	}
+
+	public static boolean isColliding(Entity e1, Entity e2) {
+		Rectangle e1Mask = new Rectangle(e1.getX() + e1.maskX, e1.getY() + e1.maskY, e1.maskWidth, e1.maskHeight);
+		Rectangle e2Mask = new Rectangle(e2.getX() + e2.maskX, e2.getY() + e2.maskY, e2.maskWidth, e2.maskHeight);
+		return e1Mask.intersects(e2Mask);
 	}
 
 	public void render(Graphics g) {
