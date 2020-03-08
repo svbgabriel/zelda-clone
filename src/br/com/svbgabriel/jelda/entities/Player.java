@@ -27,16 +27,22 @@ public class Player extends Entity {
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
 
+	private BufferedImage playerDamage;
+
 	public static double life = 100;
 	public static double maxLife = 100;
 
 	public int bullet = 0;
+
+	public boolean isDamaged = false;
+	private int damageFrames = 0;
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
 
 		rightPlayer = new BufferedImage[4];
 		leftPlayer = new BufferedImage[4];
+		playerDamage = Game.spritesheet.getSprite(0, 16, 16, 16);
 
 		for (int i = 0; i < 4; i++) {
 			rightPlayer[i] = Game.spritesheet.getSprite(32 + (i * 16), 0, 16, 16);
@@ -78,6 +84,14 @@ public class Player extends Entity {
 		checkCollisionWithLifePack();
 		checkCollisionWithBullet();
 
+		if (isDamaged) {
+			damageFrames++;
+			if (damageFrames == 8) {
+				damageFrames = 0;
+				isDamaged = false;
+			}
+		}
+
 		// Calcula a movimentação para a Câmera
 		Camera.x = Camera.clamp(getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
 		Camera.y = Camera.clamp(getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
@@ -111,10 +125,14 @@ public class Player extends Entity {
 	}
 
 	public void render(Graphics g) {
-		if (dir == right_dir) {
-			g.drawImage(rightPlayer[index], getX() - Camera.x, getY() - Camera.y, null);
-		} else if (dir == left_dir) {
-			g.drawImage(leftPlayer[index], getX() - Camera.x, getY() - Camera.y, null);
+		if (!isDamaged) {
+			if (dir == right_dir) {
+				g.drawImage(rightPlayer[index], getX() - Camera.x, getY() - Camera.y, null);
+			} else if (dir == left_dir) {
+				g.drawImage(leftPlayer[index], getX() - Camera.x, getY() - Camera.y, null);
+			}
+		} else {
+			g.drawImage(playerDamage, getX() - Camera.x, getY() - Camera.y, null);
 		}
 	}
 
