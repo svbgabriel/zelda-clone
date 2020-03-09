@@ -40,6 +40,10 @@ public class Player extends Entity {
 
 	public boolean hasWeapon = false;
 	public boolean shoot = false;
+	public boolean mouseShoot = false;
+
+	public int mx;
+	public int my;
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -113,6 +117,29 @@ public class Player extends Entity {
 				}
 
 				Bullet bullet = new Bullet(getX() + px, getY() + py, 3, 3, null, dx, 0);
+				Game.bullets.add(bullet);
+			}
+		}
+
+		if (mouseShoot) {
+			mouseShoot = false;
+			if (hasWeapon && ammo > 0) {
+				ammo--;
+				int px = 0;
+				int py = 8;
+				double angle = 0;
+				if (dir == right_dir) {
+					px = 18;
+					angle = Math.atan2(my - (getY() + py - Camera.y), mx - (getX() + px - Camera.x));
+				} else {
+					px = -8;
+					angle = Math.atan2(my - (getY() + py - Camera.y), mx - (getX() + px - Camera.x));
+				}
+
+				double dx = Math.cos(angle);
+				double dy = Math.sin(angle);
+
+				Bullet bullet = new Bullet(this.getX() + px, this.getY() + py, 3, 3, null, dx, dy);
 				Game.bullets.add(bullet);
 			}
 		}

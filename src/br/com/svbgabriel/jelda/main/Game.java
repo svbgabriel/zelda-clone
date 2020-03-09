@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ import br.com.svbgabriel.jelda.graphics.Spritesheet;
 import br.com.svbgabriel.jelda.graphics.UI;
 import br.com.svbgabriel.jelda.world.World;
 
-public class Game extends Canvas implements Runnable, KeyListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
 
 	private static final long serialVersionUID = -6698469945672704134L;
 	public static JFrame frame;
@@ -52,6 +54,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		ui = new UI();
 		rand = new Random();
 		addKeyListener(this);
+		addMouseListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		initFrame();
 		// Inicializando objetos
@@ -201,6 +204,33 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		player.mouseShoot = true;
+		player.mx = (e.getX() / SCALE);
+		player.my = (e.getY() / SCALE);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
 
 	}
 

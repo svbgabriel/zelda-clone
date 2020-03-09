@@ -9,13 +9,13 @@ import br.com.svbgabriel.jelda.world.Camera;
 
 public class Bullet extends Entity {
 
-	private int dx;
-	private int dy;
+	private double dx;
+	private double dy;
 	private double speed = 4;
 	private int life = 30;
 	private int currentLife = 0;
 
-	public Bullet(int x, int y, int width, int height, BufferedImage sprite, int dx, int dy) {
+	public Bullet(int x, int y, int width, int height, BufferedImage sprite, double dx, double dy) {
 		super(x, y, width, height, sprite);
 		this.dx = dx;
 		this.dy = dy;
@@ -27,6 +27,7 @@ public class Bullet extends Entity {
 		currentLife++;
 		if (currentLife == life) {
 			Game.bullets.remove(this);
+			return;
 		}
 	}
 
