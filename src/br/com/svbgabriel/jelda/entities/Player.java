@@ -90,7 +90,7 @@ public class Player extends Entity {
 		}
 
 		checkCollisionWithLifePack();
-		checkCollisionWithBullet();
+		checkCollisionWithAmmo();
 		checkCollisionWithWeapon();
 
 		if (isDamaged) {
@@ -160,12 +160,12 @@ public class Player extends Entity {
 		Camera.y = Camera.clamp(getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
 	}
 
-	public void checkCollisionWithBullet() {
+	public void checkCollisionWithAmmo() {
 		for (int i = 0; i < Game.entities.size(); i++) {
 			Entity e = Game.entities.get(i);
 			if (e instanceof Ammo) {
 				if (Entity.isColliding(this, e)) {
-					ammo += 10;
+					ammo += 100;
 					Game.entities.remove(e);
 				}
 			}

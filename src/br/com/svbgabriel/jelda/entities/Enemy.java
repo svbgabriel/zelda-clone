@@ -15,6 +15,7 @@ public class Enemy extends Entity {
 	private int index = 0;
 	private int maxIndex = 1;
 	private double speed = 0.4;
+	private int life = 10;
 
 	// Máscara de colisão
 	private int maskX = 8;
@@ -64,10 +65,32 @@ public class Enemy extends Entity {
 				index = 0;
 			}
 		}
+
+		checkCollisionWithBullet();
+
+		if (life <= 0) {
+			destroySelf();
+			return;
+		}
+	}
+
+	public void destroySelf() {
+		Game.entities.remove(this);
 	}
 
 	public void render(Graphics g) {
 		g.drawImage(sprites[index], getX() - Camera.x, getY() - Camera.y, null);
+	}
+
+	public void checkCollisionWithBullet() {
+		for (int i = 0; i < Game.bullets.size(); i++) {
+			Bullet bullet = Game.bullets.get(i);
+			if (Entity.isColliding(this, bullet)) {
+				life--;
+				Game.bullets.remove(bullet);
+				return;
+			}
+		}
 	}
 
 	public boolean isCollidingWithPlayer() {
