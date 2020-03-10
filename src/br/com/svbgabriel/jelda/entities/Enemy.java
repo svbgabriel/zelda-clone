@@ -25,6 +25,10 @@ public class Enemy extends Entity {
 
 	private BufferedImage[] sprites;
 
+	private boolean isDamaged = false;
+	private int damagedFrames = 10;
+	private int damageCurrent = 0;
+
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, null);
 		sprites = new BufferedImage[2];
@@ -72,6 +76,14 @@ public class Enemy extends Entity {
 			destroySelf();
 			return;
 		}
+
+		if (isDamaged) {
+			damageCurrent++;
+			if (damageCurrent == damagedFrames) {
+				damageCurrent = 0;
+				isDamaged = false;
+			}
+		}
 	}
 
 	public void destroySelf() {
@@ -79,7 +91,12 @@ public class Enemy extends Entity {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(sprites[index], getX() - Camera.x, getY() - Camera.y, null);
+		if (!isDamaged) {
+			g.drawImage(sprites[index], getX() - Camera.x, getY() - Camera.y, null);
+		} else {
+			g.drawImage(Entity.ENEMY_FEEDBACK, getX() - Camera.x, getY() - Camera.y, null);
+		}
+
 	}
 
 	public void checkCollisionWithBullet() {
@@ -87,6 +104,7 @@ public class Enemy extends Entity {
 			Bullet bullet = Game.bullets.get(i);
 			if (Entity.isColliding(this, bullet)) {
 				life--;
+				isDamaged = true;
 				Game.bullets.remove(bullet);
 				return;
 			}
