@@ -10,7 +10,9 @@ import br.com.svbgabriel.jelda.entities.Ammo;
 import br.com.svbgabriel.jelda.entities.Enemy;
 import br.com.svbgabriel.jelda.entities.Entity;
 import br.com.svbgabriel.jelda.entities.LifePack;
+import br.com.svbgabriel.jelda.entities.Player;
 import br.com.svbgabriel.jelda.entities.Weapon;
+import br.com.svbgabriel.jelda.graphics.Spritesheet;
 import br.com.svbgabriel.jelda.main.Game;
 
 public class World {
@@ -69,20 +71,28 @@ public class World {
 	public static boolean isFree(int xNext, int yNext) {
 		int x1 = xNext / TILE_SIZE;
 		int y1 = yNext / TILE_SIZE;
-		
+
 		int x2 = (xNext + TILE_SIZE - 1) / TILE_SIZE;
 		int y2 = yNext / TILE_SIZE;
-		
+
 		int x3 = xNext / TILE_SIZE;
-		int y3 = (yNext  + TILE_SIZE - 1) / TILE_SIZE;
-		
-		int x4 = (xNext  + TILE_SIZE - 1) / TILE_SIZE;
-		int y4 = (yNext  + TILE_SIZE - 1) / TILE_SIZE;
-		
-		return !((tiles[x1 + (y1 * WIDTH)] instanceof WallTile) ||
-				(tiles[x2 + (y2 * WIDTH)] instanceof WallTile) ||
-				(tiles[x3 + (y3 * WIDTH)] instanceof WallTile) ||
-				(tiles[x4 + (y4 * WIDTH)] instanceof WallTile));
+		int y3 = (yNext + TILE_SIZE - 1) / TILE_SIZE;
+
+		int x4 = (xNext + TILE_SIZE - 1) / TILE_SIZE;
+		int y4 = (yNext + TILE_SIZE - 1) / TILE_SIZE;
+
+		return !((tiles[x1 + (y1 * WIDTH)] instanceof WallTile) || (tiles[x2 + (y2 * WIDTH)] instanceof WallTile)
+				|| (tiles[x3 + (y3 * WIDTH)] instanceof WallTile) || (tiles[x4 + (y4 * WIDTH)] instanceof WallTile));
+	}
+
+	public static void restartGame(String level) {
+		Game.entities.clear();
+		Game.enemies.clear();
+		Game.spritesheet = new Spritesheet("/spritesheet.png");
+		Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
+		Game.entities.add(Game.player);
+		Game.world = new World("/" + level);
+		return;
 	}
 
 	public void render(Graphics g) {
