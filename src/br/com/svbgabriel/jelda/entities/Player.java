@@ -145,7 +145,7 @@ public class Player extends Entity {
 
 		// Game over
 		if (life <= 0) {
-
+			Game.gameState = "GAME_OVER";
 		}
 
 		// Calcula a movimentação para a Câmera
