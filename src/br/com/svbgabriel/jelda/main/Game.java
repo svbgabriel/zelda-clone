@@ -54,6 +54,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public UI ui;
 
 	public static String gameState = "NORMAL";
+	private boolean showMessageGameOver = true;
+	private int framesGameOver = 0;
+	private boolean restartGame = false;
 
 	public Game() {
 		ui = new UI();
@@ -105,6 +108,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public void tick() {
 		if (gameState.equals("NORMAL")) {
+			restartGame = false;
 			for (int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
 				e.tick();
@@ -123,7 +127,22 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				World.restartGame(newWorld);
 			}
 		} else if (gameState.equals("GAME_OVER")) {
+			framesGameOver++;
+			if (framesGameOver == 30) {
+				framesGameOver = 0;
+				if (showMessageGameOver) {
+					showMessageGameOver = false;
+				} else {
+					showMessageGameOver = true;
+				}
+			}
 
+			if (restartGame) {
+				restartGame = false;
+				gameState = "NORMAL";
+				CUR_LEVEL = 1;
+				World.restartGame("level" + CUR_LEVEL + ".png");
+			}
 		}
 	}
 
@@ -160,7 +179,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			g.setColor(Color.WHITE);
 			g.drawString("Game Over", (WIDTH * SCALE) / 2 - 50, (HEIGHT * SCALE) / 2 - 20);
 			g.setFont(new Font("arial", Font.BOLD, 32));
-			g.drawString(">Pressione Enter para continuar<", (WIDTH * SCALE) / 2 - 200, (HEIGHT * SCALE) / 2 + 40);
+			if (showMessageGameOver) {
+				g.drawString(">Pressione Enter para continuar<", (WIDTH * SCALE) / 2 - 200, (HEIGHT * SCALE) / 2 + 40);
+			}
 		}
 		bs.show();
 	}
@@ -212,6 +233,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 		if (e.getKeyCode() == KeyEvent.VK_X) {
 			player.shoot = true;
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			restartGame = true;
 		}
 	}
 

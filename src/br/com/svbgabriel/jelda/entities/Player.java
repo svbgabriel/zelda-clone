@@ -145,6 +145,7 @@ public class Player extends Entity {
 
 		// Game over
 		if (life <= 0) {
+			life = 0;
 			Game.gameState = "GAME_OVER";
 		}
 
