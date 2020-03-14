@@ -11,6 +11,8 @@ public class Menu {
 	public int maxOptions = options.length - 1;
 	public boolean up;
 	public boolean down;
+	public boolean enter;
+	public boolean pause = false;
 
 	public void tick() {
 		if (up) {
@@ -27,6 +29,16 @@ public class Menu {
 				currentOption = 0;
 			}
 		}
+		if (enter) {
+			enter = false;
+			if (options[currentOption].equals("Novo jogo") || options[currentOption].equals("Continuar")) {
+				Game.gameState = "NORMAL";
+				pause = false;
+			}
+			if (options[currentOption].equals("Sair")) {
+				System.exit(0);
+			}
+		}
 	}
 
 	public void render(Graphics g) {
@@ -39,7 +51,11 @@ public class Menu {
 		// Opções de menu
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("arial", Font.BOLD, 24));
-		g.drawString("Novo jogo", (Game.WIDTH * Game.SCALE) / 2 - 50, 160);
+		if (!pause) {
+			g.drawString("Novo jogo", (Game.WIDTH * Game.SCALE) / 2 - 50, 160);
+		} else {
+			g.drawString("Resumir", (Game.WIDTH * Game.SCALE) / 2 - 40, 160);
+		}
 		g.drawString("Carregar jogo", (Game.WIDTH * Game.SCALE) / 2 - 70, 200);
 		g.drawString("Sair", (Game.WIDTH * Game.SCALE) / 2 - 10, 240);
 
