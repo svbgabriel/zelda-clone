@@ -149,6 +149,10 @@ public class Player extends Entity {
 			Game.gameState = "GAME_OVER";
 		}
 
+		updateCamera();
+	}
+
+	public void updateCamera() {
 		// Calcula a movimentação para a Câmera
 		Camera.x = Camera.clamp(getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
 		Camera.y = Camera.clamp(getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
