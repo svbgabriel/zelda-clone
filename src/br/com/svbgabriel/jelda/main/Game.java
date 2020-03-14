@@ -34,7 +34,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private boolean isRunning;
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
-	private final int SCALE = 3;
+	public static final int SCALE = 3;
 
 	private int CUR_LEVEL = 1;
 	private int MAX_LEVEL = 2;
@@ -53,10 +53,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public UI ui;
 
-	public static String gameState = "NORMAL";
+	public static String gameState = "MENU";
 	private boolean showMessageGameOver = true;
 	private int framesGameOver = 0;
 	private boolean restartGame = false;
+
+	public Menu menu;
 
 	public Game() {
 		ui = new UI();
@@ -74,6 +76,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 		world = new World("/level1.png");
+		menu = new Menu();
 	}
 
 	public void initFrame() {
@@ -143,6 +146,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				CUR_LEVEL = 1;
 				World.restartGame("level" + CUR_LEVEL + ".png");
 			}
+		} else if (gameState.equals("MENU")) {
+			menu.tick();
 		}
 	}
 
@@ -177,11 +182,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
 			g.setFont(new Font("arial", Font.BOLD, 36));
 			g.setColor(Color.WHITE);
-			g.drawString("Game Over", (WIDTH * SCALE) / 2 - 50, (HEIGHT * SCALE) / 2 - 20);
+			g.drawString("Game Over", (WIDTH * SCALE) / 2 - 90, (HEIGHT * SCALE) / 2 - 20);
 			g.setFont(new Font("arial", Font.BOLD, 32));
 			if (showMessageGameOver) {
 				g.drawString(">Pressione Enter para continuar<", (WIDTH * SCALE) / 2 - 200, (HEIGHT * SCALE) / 2 + 40);
 			}
+		} else if (gameState.equals("MENU")) {
+			menu.render(g);
 		}
 		bs.show();
 	}
@@ -227,8 +234,16 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			player.up = true;
+
+			if (gameState.equals("MENU")) {
+				menu.down = true;
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = true;
+
+			if (gameState.equals("MENU")) {
+				menu.down = true;
+			}
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_X) {
