@@ -208,6 +208,13 @@ public class Player extends Entity {
 			}
 		} else {
 			g.drawImage(playerDamage, getX() - Camera.x, getY() - Camera.y, null);
+			if (hasWeapon) {
+				if (dir == left_dir) {
+					g.drawImage(Entity.GUN_DAMAGE_LEFT, getX() - Camera.x - 8, getY() - Camera.y, null);
+				} else {
+					g.drawImage(Entity.GUN_DAMAGE_RIGHT, getX() - Camera.x + 8, getY() - Camera.y, null);
+				}
+			}
 		}
 	}
 
