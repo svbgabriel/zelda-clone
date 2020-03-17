@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import br.com.svbgabriel.jelda.main.Game;
+import br.com.svbgabriel.jelda.main.Sound;
 import br.com.svbgabriel.jelda.world.Camera;
 import br.com.svbgabriel.jelda.world.World;
 
@@ -56,6 +57,7 @@ public class Enemy extends Entity {
 		} else {
 			// Inimigo está colidindo com o Player
 			if (Game.rand.nextInt(100) < 10) {
+				Sound.hurtEffect.play();
 				Game.player.life--;
 				Game.player.isDamaged = true;
 			}
