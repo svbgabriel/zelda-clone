@@ -1,5 +1,6 @@
 package br.com.svbgabriel.jelda.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -44,6 +45,15 @@ public class Player extends Entity {
 	public int mx;
 	public int my;
 
+	public boolean isJumping = false;
+	public boolean jump = false;
+	public int z = 0;
+	public int jumpSpeed = 2;
+	public int jumpFrames = 50;
+	public int jumpCurrent = 0;
+	public boolean jumpUp = false;
+	public boolean jumpDown = false;
+
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
 
@@ -58,6 +68,32 @@ public class Player extends Entity {
 	}
 
 	public void tick() {
+		if (jump) {
+			if (!isJumping) {
+				jump = false;
+				isJumping = true;
+				jumpUp = true;
+			}
+		}
+
+		if (isJumping) {
+			if (jumpUp) {
+				jumpCurrent += jumpSpeed;
+			} else if (jumpDown) {
+				jumpCurrent -= jumpSpeed;
+				if (jumpCurrent <= 0) {
+					isJumping = false;
+					jumpDown = false;
+					jumpUp = false;
+				}
+			}
+			z = jumpCurrent;
+			if (jumpCurrent >= jumpFrames) {
+				jumpUp = false;
+				jumpDown = true;
+			}
+		}
+
 		moved = false;
 		if (right && World.isFree((int) (x + speed), getY())) {
 			moved = true;
@@ -200,25 +236,30 @@ public class Player extends Entity {
 	public void render(Graphics g) {
 		if (!isDamaged) {
 			if (dir == right_dir) {
-				g.drawImage(rightPlayer[index], getX() - Camera.x, getY() - Camera.y, null);
+				g.drawImage(rightPlayer[index], getX() - Camera.x, getY() - Camera.y - z, null);
 				if (hasWeapon) {
-					g.drawImage(WEAPON_RIGHT, getX() - Camera.x + 8, getY() - Camera.y, null);
+					g.drawImage(WEAPON_RIGHT, getX() - Camera.x + 8, getY() - Camera.y - z, null);
 				}
 			} else if (dir == left_dir) {
-				g.drawImage(leftPlayer[index], getX() - Camera.x, getY() - Camera.y, null);
+				g.drawImage(leftPlayer[index], getX() - Camera.x, getY() - Camera.y - z, null);
 				if (hasWeapon) {
-					g.drawImage(WEAPON_LEFT, getX() - Camera.x - 8, getY() - Camera.y, null);
+					g.drawImage(WEAPON_LEFT, getX() - Camera.x - 8, getY() - Camera.y - z, null);
 				}
 			}
 		} else {
-			g.drawImage(playerDamage, getX() - Camera.x, getY() - Camera.y, null);
+			g.drawImage(playerDamage, getX() - Camera.x, getY() - Camera.y - z, null);
 			if (hasWeapon) {
 				if (dir == left_dir) {
-					g.drawImage(Entity.GUN_DAMAGE_LEFT, getX() - Camera.x - 8, getY() - Camera.y, null);
+					g.drawImage(Entity.GUN_DAMAGE_LEFT, getX() - Camera.x - 8, getY() - Camera.y - z, null);
 				} else {
-					g.drawImage(Entity.GUN_DAMAGE_RIGHT, getX() - Camera.x + 8, getY() - Camera.y, null);
+					g.drawImage(Entity.GUN_DAMAGE_RIGHT, getX() - Camera.x + 8, getY() - Camera.y - z, null);
 				}
 			}
+		}
+
+		if (isJumping) {
+			g.setColor(Color.BLACK);
+			g.fillOval(getX() - Camera.x + 8, getY() - Camera.y + 16, 8, 8);
 		}
 	}
 

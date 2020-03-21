@@ -21,6 +21,7 @@ public class Entity {
 
 	protected double x;
 	protected double y;
+	protected double z;
 	protected int width;
 	protected int height;
 
@@ -83,7 +84,12 @@ public class Entity {
 	public static boolean isColliding(Entity e1, Entity e2) {
 		Rectangle e1Mask = new Rectangle(e1.getX() + e1.maskX, e1.getY() + e1.maskY, e1.maskWidth, e1.maskHeight);
 		Rectangle e2Mask = new Rectangle(e2.getX() + e2.maskX, e2.getY() + e2.maskY, e2.maskWidth, e2.maskHeight);
-		return e1Mask.intersects(e2Mask);
+
+		if (e1Mask.intersects(e2Mask) && e1.z == e2.z) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public void render(Graphics g) {
