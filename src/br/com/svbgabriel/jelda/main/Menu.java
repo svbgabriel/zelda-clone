@@ -3,6 +3,9 @@ package br.com.svbgabriel.jelda.main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Menu {
 
@@ -38,6 +41,37 @@ public class Menu {
 			if (options[currentOption].equals("Sair")) {
 				System.exit(0);
 			}
+		}
+	}
+
+	public static void saveGame(String[] val1, int[] val2, int encode) {
+		BufferedWriter write = null;
+		try {
+			write = new BufferedWriter(new FileWriter("save.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < val1.length; i++) {
+			String current = val1[i];
+			current += ":";
+			char[] value = Integer.toString(val2[i]).toCharArray();
+			for (int j = 0; j < value.length; j++) {
+				value[j] += encode;
+				current += value[j];
+			}
+			try {
+				write.write(current);
+				if (i < val1.length - 1) {
+					write.newLine();
+				}
+			} catch (IOException e) {
+			}
+		}
+		try {
+			write.flush();
+			write.close();
+		} catch (Exception e) {
 		}
 	}
 
