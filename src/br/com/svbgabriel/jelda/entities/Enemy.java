@@ -38,28 +38,30 @@ public class Enemy extends Entity {
 	}
 
 	public void tick() {
-		if (!isCollidingWithPlayer()) {
-			if ((int) x < Game.player.getX() && World.isFree((int) (x + speed), getY())
-					&& !isColliding((int) (x + speed), getY())) {
-				x += speed;
-			} else if ((int) x > Game.player.getX() && World.isFree((int) (x - speed), getY())
-					&& !isColliding((int) (x - speed), getY())) {
-				x -= speed;
-			}
+		if (calculateDistance(getX(), getY(), Game.player.getX(), Game.player.getY()) < 80) {
+			if (!isCollidingWithPlayer()) {
+				if ((int) x < Game.player.getX() && World.isFree((int) (x + speed), getY())
+						&& !isColliding((int) (x + speed), getY())) {
+					x += speed;
+				} else if ((int) x > Game.player.getX() && World.isFree((int) (x - speed), getY())
+						&& !isColliding((int) (x - speed), getY())) {
+					x -= speed;
+				}
 
-			if ((int) y < Game.player.getY() && World.isFree(getX(), (int) (y + speed))
-					&& !isColliding(getX(), (int) (y + speed))) {
-				y += speed;
-			} else if ((int) y > Game.player.getY() && World.isFree(getX(), (int) (y - speed))
-					&& !isColliding(getX(), (int) (y - speed))) {
-				y -= speed;
-			}
-		} else {
-			// Inimigo está colidindo com o Player
-			if (Game.rand.nextInt(100) < 10) {
-				Sound.hurtEffect.play();
-				Game.player.life--;
-				Game.player.isDamaged = true;
+				if ((int) y < Game.player.getY() && World.isFree(getX(), (int) (y + speed))
+						&& !isColliding(getX(), (int) (y + speed))) {
+					y += speed;
+				} else if ((int) y > Game.player.getY() && World.isFree(getX(), (int) (y - speed))
+						&& !isColliding(getX(), (int) (y - speed))) {
+					y -= speed;
+				}
+			} else {
+				// Inimigo está colidindo com o Player
+				if (Game.rand.nextInt(100) < 10) {
+					Sound.hurtEffect.play();
+					Game.player.life--;
+					Game.player.isDamaged = true;
+				}
 			}
 		}
 
