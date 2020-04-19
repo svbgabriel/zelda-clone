@@ -17,7 +17,7 @@ import br.com.svbgabriel.jelda.main.Game;
 
 public class World {
 
-	private static Tile[] tiles;
+	public static Tile[] tiles;
 	public static int WIDTH;
 	public static int HEIGHT;
 	public static final int TILE_SIZE = 16;
