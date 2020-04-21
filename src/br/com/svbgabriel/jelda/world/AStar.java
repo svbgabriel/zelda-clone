@@ -59,7 +59,7 @@ public class AStar {
 				int x = current.tile.x;
 				int y = current.tile.y;
 				int xi = (i % 3) - 1;
-				int yi = (1 / 3) - 1;
+				int yi = (i / 3) - 1;
 				Tile tile = World.tiles[x + xi + ((y + yi) * World.WIDTH)];
 				if (tile == null) {
 					continue;
@@ -69,13 +69,13 @@ public class AStar {
 				}
 				if (i == 0) {
 					Tile test = World.tiles[x + xi + 1 + ((y + yi) * World.WIDTH)];
-					Tile test2 = World.tiles[x + xi + 1 + ((y + yi) * World.WIDTH)];
+					Tile test2 = World.tiles[x + xi + ((y + yi + 1) * World.WIDTH)];
 					if (test instanceof WallTile || test2 instanceof WallTile) {
 						continue;
 					}
 				} else if (i == 2) {
-					Tile test = World.tiles[x + xi + 1 + ((y + yi) * World.WIDTH)];
-					Tile test2 = World.tiles[x + xi + ((y + yi) * World.WIDTH)];
+					Tile test = World.tiles[x + xi - 1 + ((y + yi) * World.WIDTH)];
+					Tile test2 = World.tiles[x + xi + ((y + yi + 1) * World.WIDTH)];
 					if (test instanceof WallTile || test2 instanceof WallTile) {
 						continue;
 					}
