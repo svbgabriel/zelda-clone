@@ -187,6 +187,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				World.restartGame("level" + CUR_LEVEL + ".png");
 			}
 		} else if (gameState.equals("MENU")) {
+			player.updateCamera();
 			menu.tick();
 		}
 	}

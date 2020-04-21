@@ -6,8 +6,9 @@ import java.awt.image.BufferedImage;
 
 import br.com.svbgabriel.jelda.main.Game;
 import br.com.svbgabriel.jelda.main.Sound;
+import br.com.svbgabriel.jelda.world.AStar;
 import br.com.svbgabriel.jelda.world.Camera;
-import br.com.svbgabriel.jelda.world.World;
+import br.com.svbgabriel.jelda.world.Vector2i;
 
 public class Enemy extends Entity {
 
@@ -15,7 +16,6 @@ public class Enemy extends Entity {
 	private int maxFrames = 20;
 	private int index = 0;
 	private int maxIndex = 1;
-	private double speed = 0.4;
 	private int life = 10;
 
 	// Máscara de colisão
@@ -38,31 +38,27 @@ public class Enemy extends Entity {
 	}
 
 	public void tick() {
-		if (calculateDistance(getX(), getY(), Game.player.getX(), Game.player.getY()) < 80) {
-			if (!isCollidingWithPlayer()) {
-				if ((int) x < Game.player.getX() && World.isFree((int) (x + speed), getY())
-						&& !isColliding((int) (x + speed), getY())) {
-					x += speed;
-				} else if ((int) x > Game.player.getX() && World.isFree((int) (x - speed), getY())
-						&& !isColliding((int) (x - speed), getY())) {
-					x -= speed;
-				}
-
-				if ((int) y < Game.player.getY() && World.isFree(getX(), (int) (y + speed))
-						&& !isColliding(getX(), (int) (y + speed))) {
-					y += speed;
-				} else if ((int) y > Game.player.getY() && World.isFree(getX(), (int) (y - speed))
-						&& !isColliding(getX(), (int) (y - speed))) {
-					y -= speed;
-				}
-			} else {
-				// Inimigo está colidindo com o Player
-				if (Game.rand.nextInt(100) < 10) {
-					Sound.hurtEffect.play();
-					Game.player.life--;
-					Game.player.isDamaged = true;
-				}
+		if (!isCollidingWithPlayer()) {
+			if (path == null || path.size() == 0) {
+				Vector2i start = new Vector2i((int) (x / 16), (int) (y / 16));
+				Vector2i end = new Vector2i((int) (Game.player.x / 16), (int) (Game.player.y / 16));
+				path = AStar.findPath(Game.world, start, end);
 			}
+		} else {
+			if (Game.rand.nextInt(100) < 5) {
+				Sound.hurtEffect.play();
+				Game.player.life -= Game.rand.nextInt(3);
+				Game.player.isDamaged = true;
+			}
+		}
+
+		if (Game.rand.nextInt(100) < 90) {
+			followPath(path);
+		}
+		if (Game.rand.nextInt(100) < 5) {
+			Vector2i start = new Vector2i((int) (x / 16), (int) (y / 16));
+			Vector2i end = new Vector2i((int) (Game.player.x / 16), (int) (Game.player.y / 16));
+			path = AStar.findPath(Game.world, start, end);
 		}
 
 		frames++;
@@ -121,21 +117,6 @@ public class Enemy extends Entity {
 		Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), 16, 16);
 
 		return enemy.intersects(player);
-	}
-
-	public boolean isColliding(int xNext, int yNext) {
-		Rectangle enemyCurrent = new Rectangle(xNext + maskX, yNext + maskY, maskWidth, maskHeight);
-		for (int i = 0; i < Game.enemies.size(); i++) {
-			Enemy e = Game.enemies.get(i);
-			if (e == this) {
-				continue;
-			}
-			Rectangle targetEnemy = new Rectangle(e.getX() + maskX, e.getY() + maskY, maskWidth, maskHeight);
-			if (enemyCurrent.intersects(targetEnemy)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }
