@@ -38,6 +38,7 @@ public class Enemy extends Entity {
 	}
 
 	public void tick() {
+		depth = 0;
 		if (!isCollidingWithPlayer()) {
 			if (path == null || path.size() == 0) {
 				Vector2i start = new Vector2i((int) (x / 16), (int) (y / 16));

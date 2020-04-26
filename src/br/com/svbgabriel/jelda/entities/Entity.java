@@ -3,6 +3,7 @@ package br.com.svbgabriel.jelda.entities;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.Comparator;
 import java.util.List;
 
 import br.com.svbgabriel.jelda.main.Game;
@@ -36,6 +37,8 @@ public class Entity {
 
 	private BufferedImage sprite;
 
+	public int depth;
+
 	protected List<Node> path;
 
 	public Entity(int x, int y, int width, int height, BufferedImage sprite) {
@@ -57,6 +60,19 @@ public class Entity {
 		this.maskWidth = maskWidth;
 		this.maskHeight = maskHeight;
 	}
+
+	public static Comparator<Entity> nodeSorter = new Comparator<Entity>() {
+		@Override
+		public int compare(Entity n0, Entity n1) {
+			if (n1.depth < n0.depth) {
+				return +1;
+			}
+			if (n1.depth > n0.depth) {
+				return -1;
+			}
+			return 0;
+		}
+	};
 
 	public void setX(int x) {
 		this.x = x;
