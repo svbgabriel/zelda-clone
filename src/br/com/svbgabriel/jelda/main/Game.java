@@ -74,6 +74,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public int[] pixels;
 	public BufferedImage lightmap;
 	public int[] lightMapPixels;
+	public static int[] minimapPixels;
+
+	public static BufferedImage minimap;
 
 	public Game() {
 		Sound.musicBackground.loop();
@@ -100,6 +103,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 		world = new World("/level1.png");
+
+		minimap = new BufferedImage(World.WIDTH, World.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		minimapPixels = ((DataBufferInt) minimap.getRaster().getDataBuffer()).getData();
 
 		try {
 			stream = ClassLoader.getSystemClassLoader().getResourceAsStream("alterebro-pixel-font.ttf");
@@ -244,6 +250,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		} else if (gameState.equals("MENU")) {
 			menu.render(g);
 		}
+		World.renderMiniMap();
+		g.drawImage(minimap, 615, 80, World.WIDTH * 5, World.HEIGHT * 5, null);
 		bs.show();
 	}
 

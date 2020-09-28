@@ -2,6 +2,7 @@ package br.com.svbgabriel.jelda.world;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -101,6 +102,8 @@ public class World {
 		Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
 		Game.entities.add(Game.player);
 		Game.world = new World("/" + level);
+		Game.minimap = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		Game.minimapPixels = ((DataBufferInt) Game.minimap.getRaster().getDataBuffer()).getData();
 		return;
 	}
 
@@ -120,5 +123,23 @@ public class World {
 				tile.render(g);
 			}
 		}
+	}
+
+	public static void renderMiniMap() {
+		for (int i = 0; i < Game.minimapPixels.length; i++) {
+			Game.minimapPixels[i] = 0;
+		}
+		for (int xx = 0; xx < WIDTH; xx++) {
+			for (int yy = 0; yy < HEIGHT; yy++) {
+				if (tiles[xx + (yy * WIDTH)] instanceof WallTile) {
+					Game.minimapPixels[xx + (yy * WIDTH)] = 0xff0000;
+				}
+			}
+		}
+
+		int xPlayer = Game.player.getX() / 16;
+		int yPlayer = Game.player.getY() / 16;
+
+		Game.minimapPixels[xPlayer + (yPlayer * WIDTH)] = 0x0000ff;
 	}
 }
